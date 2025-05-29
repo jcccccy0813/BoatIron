@@ -8,6 +8,14 @@
 #include <mutex>
 #include <iomanip>
 #include <sstream>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#ifdef _WIN32
+#include <direct.h>
+#include <errno.h>
+#endif
+
 #include "opencv2/core.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
@@ -29,6 +37,16 @@ struct CameraHandle
     std::string windowName;
     std::string cameraName;
 };
+
+// 创建文件夹（跨平台）
+bool CreateDirectoryIfNotExists(const std::string& dir)
+{
+#ifdef _WIN32
+    return _mkdir(dir.c_str()) == 0 || errno == EEXIST;
+#else
+    return mkdir(dir.c_str(), 0755) == 0 || errno == EEXIST;
+#endif
+}
 
 bool SetResolution(void* handle, int width, int height)
 {
@@ -88,15 +106,16 @@ void CameraThread(CameraHandle* cam, bool isSingle = false)
                 {
                     std::lock_guard<std::mutex> lock(saveMutex);
                     int group = saveGroupID.load();
-                    std::ostringstream filenameStream;
+
+                    std::string folder;
                     if (isSingle)
-                    {
-                        filenameStream << "camera_" << cam->cameraName << "_" << group << ".jpg";
-                    }
+                        folder = (cam->cameraName == "left") ? "leftsingle" : "rightsingle";
                     else
-                    {
-                        filenameStream << cam->cameraName << std::setw(2) << std::setfill('0') << group << ".jpg";
-                    }
+                        folder = "stereo";
+                    CreateDirectoryIfNotExists(folder);
+
+                    std::ostringstream filenameStream;
+                    filenameStream << folder << "/" << cam->cameraName << std::setw(2) << std::setfill('0') << group << ".jpg";
                     std::string filename = filenameStream.str();
 
                     std::vector<int> compression_params = { cv::IMWRITE_JPEG_QUALITY, 90 };
@@ -140,23 +159,18 @@ void RunSingleCameraMode()
     nRet = MV_CC_OpenDevice(cam.handle);
     if (nRet != MV_OK) return;
 
-    // 新增：强制开启伽马校正
     bool gammaEnable = true;
     nRet = MV_CC_SetBoolValue(cam.handle, "GammaEnable", gammaEnable);
     if (nRet != MV_OK)
-    {
         printf("Failed to enable Gamma correction on camera %d\n", cameraIndex);
-    }
     else
-    {
         printf("Gamma correction enabled on camera %d\n", cameraIndex);
-    }
 
     MV_CC_SetEnumValue(cam.handle, "TriggerMode", 0);
     cam.index = cameraIndex;
     cam.isRunning = true;
     cam.windowName = (cameraIndex == 0) ? "left" : "right";
-    cam.cameraName = (cameraIndex == 0) ? "left" : "right";
+    cam.cameraName = cam.windowName;
 
     std::thread camThread([&]() {
         CameraThread(&cam, true);
@@ -205,23 +219,18 @@ void RunDualCameraMode()
         nRet = MV_CC_OpenDevice(cameras[i].handle);
         if (nRet != MV_OK) return;
 
-        // 新增：强制开启伽马校正
         bool gammaEnable = true;
         nRet = MV_CC_SetBoolValue(cameras[i].handle, "GammaEnable", gammaEnable);
         if (nRet != MV_OK)
-        {
             printf("Failed to enable Gamma correction on camera %d\n", i);
-        }
         else
-        {
             printf("Gamma correction enabled on camera %d\n", i);
-        }
 
         MV_CC_SetEnumValue(cameras[i].handle, "TriggerMode", 0);
         cameras[i].index = i;
         cameras[i].isRunning = true;
         cameras[i].windowName = (i == 0) ? "left" : "right";
-        cameras[i].cameraName = (i == 0) ? "left" : "right";
+        cameras[i].cameraName = cameras[i].windowName;
     }
 
     std::thread threads[cameraNum];
@@ -256,7 +265,6 @@ void RunDualCameraMode()
         MV_CC_DestroyHandle(cam.handle);
     }
 }
-
 
 int main()
 {
