@@ -365,7 +365,7 @@ static bool runAndSave(const string& outputFilename,
     return ok;
 }
 
-int main1( int argc, char** argv )
+int main5( int argc, char** argv )
 {
     Size boardSize, imageSize;
     float squareSize, markerSize, aspectRatio = 1;

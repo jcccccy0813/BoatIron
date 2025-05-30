@@ -46,7 +46,7 @@ static void saveXYZ(const char* filename, const Mat& mat)
     fclose(fp);
 }
 
-int main0(int argc, char** argv)
+int main(int argc, char** argv)
 {
     // 初始化命令行参数
     cv::CommandLineParser parser(argc, argv,
