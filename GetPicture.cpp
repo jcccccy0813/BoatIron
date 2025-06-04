@@ -266,7 +266,7 @@ void RunDualCameraMode()
     }
 }
 
-int main0()
+int main()
 {
     int mode;
     printf("Enter mode (1 = Single Camera, 2 = Dual Camera): ");

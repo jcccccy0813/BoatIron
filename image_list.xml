@@ -1,5 +1,7 @@
 %YAML:1.0
 images:
+  - stereo/left01.jpg
+  - stereo/right01.jpg
   - stereo/left02.jpg
   - stereo/right02.jpg
   - stereo/left03.jpg

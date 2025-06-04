@@ -282,13 +282,7 @@ StereoCalib(const vector<string>& imagelist, Size inputBoardSize, string type, f
         cameraMatrix[0], distCoeffs[0],
         cameraMatrix[1], distCoeffs[1],
         imageSize, R, T, E, F,
-        CALIB_FIX_INTRINSIC |  // 固定内参
-        CALIB_FIX_ASPECT_RATIO +
-        CALIB_ZERO_TANGENT_DIST +
-        CALIB_USE_INTRINSIC_GUESS +
-        CALIB_SAME_FOCAL_LENGTH +
-        CALIB_RATIONAL_MODEL +
-        CALIB_FIX_K3 + CALIB_FIX_K4 + CALIB_FIX_K5,
+        CALIB_FIX_INTRINSIC,  // 固定内参
         TermCriteria(TermCriteria::COUNT + TermCriteria::EPS, 100, 1e-5));
     cout << "done with RMS error=" << rms << endl;
 
@@ -448,7 +442,7 @@ static bool readStringList(const string& filename, vector<string>& l)
     return true;
 }
 
-int main0(int argc, char** argv)
+int main5(int argc, char** argv)
 {
     Size inputBoardSize;
     string imagelistfn;
