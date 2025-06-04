@@ -5,3 +5,4 @@ DoubleMatch.cpp双目极限矫正、视差计算、生成点云用
 下载后需要新建三个文件夹分别是leftsingle、rightsingle、stereo
 
 2.0更新了getpicture.cpp 单目采集后放入相应single文件夹 双目采集后放入stereo文件夹
+4.0更新了DoubleCalibration.cpp并且讲一些对应用到的lib直接规制到项目目录下方便使用者。代码方面主要解决了双目标定内参不固定的问题
