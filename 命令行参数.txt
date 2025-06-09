@@ -1,0 +1,4 @@
+--list=image_list.txt --algorithm=hh4  --i=intrinsics.yml --e=extrinsics.yml --color --o=disparity_result --p=point_cloud 
+-w=11 -h=8 -pt=chessboard -s=20 -o=left_camera.yml  left_list.xml
+-w=11 -h=8 -pt=chessboard -s=20 -o=right_camera.yml  right_list.xml
+-w=11 -h=8 -t=chessboard -s=20 image_list.xml
