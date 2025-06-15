@@ -60,7 +60,7 @@ static void saveColoredXYZ(const char* filename, const Mat& mat, const Mat& colo
     cout << "Saved colored point cloud to " << filename << endl;
 }
 
-int main8(int argc, char** argv)
+int main1(int argc, char** argv)
 {
     cv::CommandLineParser parser(argc, argv,
         "{help h||}{list||}{algorithm|sgbm|}{max-disparity|64|}{blocksize|5|}"

@@ -83,7 +83,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(MVCAM_COMMON_RUNENV)\Includes;inc;opencv480\include;D:\Program Files\PCL 1.15.0\include\pcl-1.15;D:\Program Files\PCL 1.15.0\3rdParty\Eigen\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MVCAM_COMMON_RUNENV)\Includes;inc;opencv480\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;VC9_COMPILE;BOOST_USE_WINDOWS_H;NOMINMAX;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -96,8 +96,8 @@
       <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>MvCameraControl.lib;opencv_world480.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\win64;lib;opencv480;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MvCameraControl.lib;opencv_world480.lib;opencv_structured_light480.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\win64;lib;opencv480;opencv480\include\opencv2\structured_light;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -120,6 +120,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main_decode.cpp" />
+    <ClCompile Include="main_encode.cpp" />
     <ClCompile Include="SingleCalibration.cpp" />
     <ClCompile Include="GetPicture.cpp" />
     <ClCompile Include="DoubleCalibration.cpp" />
