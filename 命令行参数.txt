@@ -2,3 +2,4 @@
 -w=11 -h=8 -pt=chessboard -s=20 -o=left_camera.yml  left_list.xml
 -w=11 -h=8 -pt=chessboard -s=20 -o=right_camera.yml  right_list.xml
 -w=11 -h=8 -t=chessboard -s=20 image_list.xml
+graycode 1920 1080

@@ -52,7 +52,7 @@ using namespace std;
 "{@proj_height  |384 | Projector height           }" 
 };
 
-int main(int argc, char* argv[])
+int main4(int argc, char* argv[])
 {
 
 	structured_light::GrayCodePattern::Params params;
