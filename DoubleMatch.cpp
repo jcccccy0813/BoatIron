@@ -227,6 +227,8 @@ int main1(int argc, char** argv)
             imwrite(oss.str(), color_display ? disp_color : disp8);
         }
 
+
+
         if (!point_cloud_filename.empty() && !Q.empty()) {
             Mat xyz, float_disp;
             disp.convertTo(float_disp, CV_32F, 1.0f / multiplier);

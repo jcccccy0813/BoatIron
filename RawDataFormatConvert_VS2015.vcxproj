@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClCompile Include="main_decode.cpp" />
     <ClCompile Include="main_encode.cpp" />
+    <ClCompile Include="PicturePlay.cpp" />
     <ClCompile Include="SingleCalibration.cpp" />
     <ClCompile Include="GetPicture.cpp" />
     <ClCompile Include="DoubleCalibration.cpp" />
