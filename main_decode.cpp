@@ -157,7 +157,7 @@ void saveDecodedImage(const Mat2f& decoded, const string& strX = "x.exr", const 
 	imwrite(strY, tmp[1]);
 }
 
-int main3(int argc, char* argv[])
+int main4(int argc, char* argv[])
 {
 	
 	CommandLineParser parser(argc, argv, keys);

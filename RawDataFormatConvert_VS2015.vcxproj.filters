@@ -30,7 +30,7 @@
     <ClCompile Include="main_decode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PicturePlay.cpp">
+    <ClCompile Include="AutoGetPicture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

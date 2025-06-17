@@ -122,11 +122,11 @@
   <ItemGroup>
     <ClCompile Include="main_decode.cpp" />
     <ClCompile Include="main_encode.cpp" />
-    <ClCompile Include="PicturePlay.cpp" />
     <ClCompile Include="SingleCalibration.cpp" />
     <ClCompile Include="GetPicture.cpp" />
     <ClCompile Include="DoubleCalibration.cpp" />
     <ClCompile Include="DoubleMatch.cpp" />
+    <ClCompile Include="AutoGetPicture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
