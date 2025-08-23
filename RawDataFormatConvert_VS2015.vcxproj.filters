@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{eb739bd9-8976-4fc4-b574-a6c4e3e2c22f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{cd6eaaeb-6800-48f1-878f-04f35657054c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{49c0ac8d-edb3-4275-b3b4-a3f4bbce213f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Base">
+      <UniqueIdentifier>{ef9f904d-9a6f-491b-8e14-724e86eafdc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Calibration">
+      <UniqueIdentifier>{ec2c374a-dec5-4827-8110-4afe9b17068c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{8d149096-ecfd-418b-bf34-8202a2bdccdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Match">
+      <UniqueIdentifier>{1ed2f1c0-49e2-4bb4-8085-147e99dfe733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GetPicture">
+      <UniqueIdentifier>{5427d0b4-b68a-4a37-88fe-3b385f43fbf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\base">
+      <UniqueIdentifier>{d40a5e19-3ec2-4050-bd97-fbe83e2533cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Calibration">
+      <UniqueIdentifier>{919afd76-bc26-4531-b379-a7c3b7a4c4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Match">
+      <UniqueIdentifier>{6c5b7f94-dc37-4cb7-b882-5bf50ef6c5f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\GetPicture">
+      <UniqueIdentifier>{1c12d3cd-0eca-4487-ba93-693fff6002e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GrayCode">
+      <UniqueIdentifier>{bc504f3a-8e61-463d-8ff8-99263c2f3818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\GrayCode">
+      <UniqueIdentifier>{0f287dec-b06a-46a1-9700-ab90e7d540ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Support">
+      <UniqueIdentifier>{c3e8eebf-e7c2-4f94-8665-1d24baf24ead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Support">
+      <UniqueIdentifier>{559f582a-09bf-4f39-a5c2-c417253467a8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="reconstruct.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraBase.cpp">
+      <Filter>Source Files\src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="Calibration.cpp">
+      <Filter>Source Files\src\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="StereoCalibration.cpp">
+      <Filter>Source Files\src\Calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="StereoMatching.cpp">
+      <Filter>Source Files\src\Match</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraCapture.cpp">
+      <Filter>Source Files\src\GetPicture</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSyncCapture.cpp">
+      <Filter>Source Files\src\GetPicture</Filter>
+    </ClCompile>
+    <ClCompile Include="GrayCodeGenerator.cpp">
+      <Filter>Source Files\src\GrayCode</Filter>
+    </ClCompile>
+    <ClCompile Include="GrayCodeDecoder.cpp">
+      <Filter>Source Files\src\GrayCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageListGenerator.cpp">
+      <Filter>Source Files\src\Support</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Calibration.h">
+      <Filter>Header Files\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="StereoCalibration.h">
+      <Filter>Header Files\Calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="StereoMatching.h">
+      <Filter>Header Files\Match</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraCapture.h">
+      <Filter>Header Files\GetPicture</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraBase.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSyncCapture.h">
+      <Filter>Header Files\GetPicture</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayCodeGenerator.h">
+      <Filter>Header Files\GrayCode</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayCodeDecoder.h">
+      <Filter>Header Files\GrayCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageListGenerator.h">
+      <Filter>Header Files\Support</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>-w=11 -h=8 -pt=chessboard -s=20 -o=left_camera.yml  left_list.xml</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerEnvironment>OPENCV_IO_ENABLE_OPENEXR=1</LocalDebuggerEnvironment>
+  </PropertyGroup>
+</Project>
