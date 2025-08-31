@@ -6,31 +6,31 @@ GrayCodeDecoder::GrayCodeDecoder()
     setupCameraSpecificParams();
     initializeGrayCode();
 }
-
+// 构造函数
 GrayCodeDecoder::GrayCodeDecoder(CameraSide side)
     : cameraSide_(side) {
     setupCameraSpecificParams();
     initializeGrayCode();
 }
-
+// 初始化
 GrayCodeDecoder::GrayCodeDecoder(const Params& params, CameraSide side)
     : params_(params), cameraSide_(side) {
     setupCameraSpecificParams();
     initializeGrayCode();
 }
-
+// 设置相机侧别
 void GrayCodeDecoder::setCameraSide(CameraSide side) {
     cameraSide_ = side;
     setupCameraSpecificParams();
     initializeGrayCode();
 }
-
+// 设置参数
 void GrayCodeDecoder::setParams(const Params& params) {
     params_ = params;
     setupCameraSpecificParams();
     initializeGrayCode();
 }
-
+// 初始化参数，命令行
 void GrayCodeDecoder::setupCameraSpecificParams() {
     // 硬编码的参数设置
     params_.width = 860;
@@ -54,7 +54,7 @@ void GrayCodeDecoder::setupCameraSpecificParams() {
         params_.yExrOutput = "y_right.exr";
     }
 }
-
+// 初始化灰码
 bool GrayCodeDecoder::initializeGrayCode() {
     cv::structured_light::GrayCodePattern::Params gcParams;
     gcParams.width = params_.width;
@@ -66,7 +66,7 @@ bool GrayCodeDecoder::initializeGrayCode() {
     }
     return !graycode_.empty();
 }
-
+// 加载图像列表文件
 std::vector<std::string> GrayCodeDecoder::loadImageList(const std::string& filename) {
     std::vector<std::string> strList;
     std::ifstream ifs(filename.c_str());
@@ -78,7 +78,7 @@ std::vector<std::string> GrayCodeDecoder::loadImageList(const std::string& filen
     }
     return strList;
 }
-
+// 加载图像
 std::vector<cv::Mat> GrayCodeDecoder::loadImages(const std::vector<std::string>& filenames) {
     std::vector<cv::Mat> imgs;
     for (const auto& filename : filenames) {
@@ -91,7 +91,7 @@ std::vector<cv::Mat> GrayCodeDecoder::loadImages(const std::vector<std::string>&
     }
     return imgs;
 }
-
+// 计算阴影掩码
 cv::Mat GrayCodeDecoder::computeShadowMask(const cv::Mat& blackImage, const cv::Mat& whiteImage) {
     cv::Mat shadowMask = cv::Mat::zeros(blackImage.size(), CV_8UC1);
     for (int j = 0; j < shadowMask.rows; ++j) {
@@ -103,7 +103,7 @@ cv::Mat GrayCodeDecoder::computeShadowMask(const cv::Mat& blackImage, const cv::
     }
     return shadowMask;
 }
-
+// 计算解码图像
 cv::Mat GrayCodeDecoder::computeDecodeImage(const std::vector<cv::Mat>& capturedPattern, const cv::Mat& mask) {
     cv::Mat decodedImage = cv::Mat::zeros(mask.size(), CV_32FC2);
     size_t numPatterns = graycode_->getNumberOfPatternImages();
@@ -124,7 +124,7 @@ cv::Mat GrayCodeDecoder::computeDecodeImage(const std::vector<cv::Mat>& captured
     }
     return decodedImage;
 }
-
+// 解码
 bool GrayCodeDecoder::decode() {
     // 根据相机侧别自动选择图像列表文件
     std::string imageListFile = (cameraSide_ == LEFT_CAMERA) ?
@@ -197,7 +197,7 @@ cv::Mat GrayCodeDecoder::getDecodedMask(const cv::Mat& decoded) {
     }
     return mask;
 }
-
+// 可视化解码图像
 void GrayCodeDecoder::visualizeDecodedImage(const cv::Mat& decoded,
     const std::string& xPath,
     const std::string& yPath) {
@@ -219,7 +219,7 @@ void GrayCodeDecoder::visualizeDecodedImage(const cv::Mat& decoded,
     cv::imwrite(xPath, xMap);
     cv::imwrite(yPath, yMap);
 }
-
+// 保存解码图像
 void GrayCodeDecoder::saveDecodedImage(const cv::Mat& decoded,
     const std::string& xPath,
     const std::string& yPath) {
@@ -228,7 +228,7 @@ void GrayCodeDecoder::saveDecodedImage(const cv::Mat& decoded,
     cv::imwrite(xPath, channels[0]);
     cv::imwrite(yPath, channels[1]);
 }
-
+// 保存解码结果
 bool GrayCodeDecoder::saveResults() {
     if (decodedImage_.empty()) {
         std::cerr << "No decoded data to save!" << std::endl;
@@ -256,7 +256,7 @@ bool GrayCodeDecoder::saveResults() {
 
     return true;
 }
-
+//运行
 void GrayCodeDecoder::decodeGrayCodePatterns() {
     std::cout << "\n=== Gray Code Decoding ===\n";
     std::cout << "This will decode captured gray code patterns for:\n";

@@ -1,31 +1,32 @@
 #include "CameraBase.h"
 
-
+//窗口名相机名
 CameraBase::CameraBase() {
     config_.windowName = "Camera";
     config_.cameraName = "camera";
 }
-
+//析构函数
 CameraBase::~CameraBase() {
     closeDevice();
 }
-
+//枚举设备
 bool CameraBase::enumDevices(MV_CC_DEVICE_INFO_LIST& deviceList) {
     return MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &deviceList) == MV_OK;
 }
-
+//初始化
 bool CameraBase::initialize(int index) {
+    //枚举设备
     MV_CC_DEVICE_INFO_LIST deviceList = { 0 };
     if (!enumDevices(deviceList) || index >= (int)deviceList.nDeviceNum) {
         std::cerr << "Camera not found at index: " << index << std::endl;
         return false;
     }
-
+    //创建句柄
     if (MV_CC_CreateHandle(&handle_, deviceList.pDeviceInfo[index]) != MV_OK) {
         std::cerr << "Failed to create camera handle." << std::endl;
         return false;
     }
-
+    //创建句柄
     if (MV_CC_OpenDevice(handle_) != MV_OK) {
         std::cerr << "Failed to open camera." << std::endl;
         return false;
@@ -46,7 +47,7 @@ bool CameraBase::initialize(int index) {
 
     return setResolution(config_.width, config_.height);
 }
-
+//设置参数
 bool CameraBase::setupCameraParameters() {
     if (MV_CC_SetEnumValue(handle_, "TriggerMode", config_.triggerMode ? 1 : 0) != MV_OK) {
         std::cerr << "Failed to set trigger mode." << std::endl;

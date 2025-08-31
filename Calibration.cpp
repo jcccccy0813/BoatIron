@@ -2,6 +2,7 @@
 
 
 Calibration::Calibration() {}
+// calibrateSelectedCamera
 bool Calibration::calibrateSelectedCamera(CameraType cameraType, PresetType preset) {
     std::string imageListFile;
     std::string outputFile;
@@ -24,7 +25,7 @@ bool Calibration::calibrateSelectedCamera(CameraType cameraType, PresetType pres
 
     return calibrateWithPreset(imageListFile, outputFile, preset);
 }
-
+// calibrateLeftCamera
 Calibration::PresetConfig Calibration::getPresetConfig(PresetType preset) {
     PresetConfig config;
     switch (preset) {
@@ -46,7 +47,7 @@ Calibration::PresetConfig Calibration::getPresetConfig(PresetType preset) {
     }
     return config;
 }
-
+// calibrateWithPreset
 bool Calibration::calibrateWithPreset(const std::string& imageListFile,
     const std::string& outputFile,
     PresetType preset) {
@@ -334,6 +335,7 @@ bool Calibration::readStringList(const std::string& filename, std::vector<std::s
     }
     return true;
 }
+//运行左相机
 void Calibration::calibrateLeftCamera() {
     Calibration calib;
     std::cout << "\n=== Left Camera Calibration ===\n";
@@ -353,7 +355,7 @@ void Calibration::calibrateLeftCamera() {
         std::cerr << "3. Not enough valid images (need at least 3)\n";
     }
 }
-
+//运行右相机
 void Calibration::calibrateRightCamera() {
     Calibration calib;
     std::cout << "\n=== Right Camera Calibration ===\n";

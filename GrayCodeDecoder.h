@@ -12,11 +12,12 @@
 
 class GrayCodeDecoder {
 public:
+    // 相机侧别
     enum CameraSide {
         LEFT_CAMERA,
         RIGHT_CAMERA
     };
-
+    // 参数
     struct Params {
         int width = 860;
         int height = 573;
@@ -28,7 +29,7 @@ public:
         std::string xExrOutput = "x.exr";
         std::string yExrOutput = "y.exr";
     };
-
+    // 构造函数
     GrayCodeDecoder();
     explicit GrayCodeDecoder(CameraSide side);
     explicit GrayCodeDecoder(const Params& params, CameraSide side = LEFT_CAMERA);

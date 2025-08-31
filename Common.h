@@ -6,14 +6,14 @@
 #include <vector>
 #include <iostream>
 #include <limits>
-
+// Camera Parameter
 enum PatternType {
     CHESSBOARD,
     CHARUCOBOARD,
     CIRCLES_GRID,
     ASYMMETRIC_CIRCLES_GRID
 };
-
+// Stereo Parameters
 enum StereoAlgorithm {
     STEREO_BM,
     STEREO_SGBM,
@@ -21,17 +21,18 @@ enum StereoAlgorithm {
     STEREO_HH4,
     STEREO_3WAY
 };
-
+// Camera Parameters
 struct CameraParameters {
     cv::Mat cameraMatrix;
     cv::Mat distCoeffs;
     cv::Size imageSize;
     };
-
+// Stereo Parameters
 struct StereoParameters {
     cv::Mat R, T, E, F;
     cv::Mat R1, R2, P1, P2, Q;
-    };
+};
+// Menu
 static void printMainMenu() {
     std::cout << "\n=== Stereo Vision System ===\n";
     std::cout << "1. Camera Capture\n";
@@ -46,6 +47,7 @@ static void printMainMenu() {
     std::cout << "10. Exit\n";
     std::cout << "Enter your choice (1-10): ";
 };
+// Clear Input Buffer
 static void clearInputBuffer() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

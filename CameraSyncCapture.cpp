@@ -24,14 +24,14 @@ CameraSyncCapture::CameraSyncCapture() {
     rightConfig.cameraName = "right";
     rightConfig.exposureTime = 10000.0f;
 }
-
+// 析构函数
 CameraSyncCapture::~CameraSyncCapture() {
     stopCapture();
     if (hdc_) ReleaseDC(hwnd_, hdc_);
     if (hwnd_) DestroyWindow(hwnd_);
     if (gdiplusToken_) GdiplusShutdown(gdiplusToken_);
 }
-
+// 初始化
 bool CameraSyncCapture::initialize() {
     // 初始化双相机
     if (!cameraCapture_.initDualCameras()) {
@@ -47,7 +47,7 @@ bool CameraSyncCapture::initialize() {
 
     return true;
 }
-
+// 投影仪初始化
 bool CameraSyncCapture::initializeProjector() {
     GdiplusStartupInput gdiplusStartupInput;
     if (GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, nullptr) != Ok) {
@@ -101,7 +101,7 @@ bool CameraSyncCapture::initializeProjector() {
 
     return true;
 }
-
+// 加载图像文件
 std::vector<std::wstring> CameraSyncCapture::loadImageFiles(const std::wstring& folder) {
     std::vector<std::wstring> files;
 
@@ -128,7 +128,7 @@ std::vector<std::wstring> CameraSyncCapture::loadImageFiles(const std::wstring& 
 
     return files;
 }
-
+// 投影图像
 void CameraSyncCapture::projectImage(const std::wstring& imagePath) {
     if (!hdc_ || !hwnd_) return;
 
@@ -155,7 +155,7 @@ void CameraSyncCapture::projectImage(const std::wstring& imagePath) {
         graphics.DrawImage(img.get(), x, y, imgWidth, imgHeight);
     }
 }
-
+// 处理图像保存
 void CameraSyncCapture::handleImageSaved(const std::string& cameraName, const std::string& filename) {
     imagesSaved_++;
     std::cout << "[" << cameraName << "] Image saved: " << filename << std::endl;
@@ -164,14 +164,14 @@ void CameraSyncCapture::handleImageSaved(const std::string& cameraName, const st
         syncCV_.notify_one();
     }
 }
-
+// 同步等待
 void CameraSyncCapture::waitForCamerasToSave() {
     std::unique_lock<std::mutex> lock(syncMutex_);
     syncCV_.wait(lock, [this] {
         return imagesSaved_ >= 2 || !cameraCapture_.isRunning();
         });
 }
-
+// 运行同步采集
 void CameraSyncCapture::runSyncCapture() {
     // 加载灰度码图像
     auto images = loadImageFiles(L"graycode");
@@ -236,7 +236,7 @@ void CameraSyncCapture::runSyncCapture() {
     std::cout << "Left images: " << cameraCapture_.getLeftImages().size() << std::endl;
     std::cout << "Right images: " << cameraCapture_.getRightImages().size() << std::endl;
 }
-
+// 停止采集
 void CameraSyncCapture::stopCapture() {
     cameraCapture_.stopCapture();
 
@@ -247,6 +247,7 @@ void CameraSyncCapture::stopCapture() {
     }
     syncCV_.notify_all();
 }
+// 运行
 void CameraSyncCapture::structuredLightCapture() {
     std::cout << "\n=== Structured Light Auto Capture ===\n";
     std::cout << "Requirements:\n";

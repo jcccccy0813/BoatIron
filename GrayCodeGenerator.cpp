@@ -7,17 +7,17 @@ GrayCodeGenerator::GrayCodeGenerator() {
     params_.outputPath = ".";
     initializeGrayCode();
 }
-
+// 构造函数
 GrayCodeGenerator::GrayCodeGenerator(const Params& params)
     : params_(params) {
     initializeGrayCode();
 }
-
+// 设置参数
 void GrayCodeGenerator::setParams(const Params& params) {
     params_ = params;
     initializeGrayCode();
 }
-
+// 初始化
 bool GrayCodeGenerator::initializeGrayCode() {
     cv::structured_light::GrayCodePattern::Params gcParams;
     gcParams.width = params_.width;
@@ -26,7 +26,7 @@ bool GrayCodeGenerator::initializeGrayCode() {
     graycode_ = cv::structured_light::GrayCodePattern::create(gcParams);
     return !graycode_.empty();
 }
-
+// 生成灰度码模式
 bool GrayCodeGenerator::generatePatterns() {
     if (graycode_.empty()) {
         if (!initializeGrayCode()) {
@@ -45,7 +45,7 @@ bool GrayCodeGenerator::generatePatterns() {
 
     return !patterns_.empty();
 }
-
+// 保存模式
 bool GrayCodeGenerator::savePatterns(const std::string& customPath) {
     if (patterns_.empty()) {
         std::cerr << "No patterns to save. Please generate patterns first." << std::endl;
@@ -66,11 +66,12 @@ bool GrayCodeGenerator::savePatterns(const std::string& customPath) {
     std::cout << "Successfully saved " << patterns_.size() << " pattern images to: " << savePath << std::endl;
     return true;
 }
-
+// 获取参数
 void GrayCodeGenerator::getShadowMaskImages(cv::Mat& black, cv::Mat& white) const {
     black = blackImage_.clone();
     white = whiteImage_.clone();
 }
+// 运行
 void GrayCodeGenerator::generateGrayCodePatterns() {
     std::cout << "\n=== Gray Code Pattern Generation ===\n";
     std::cout << "This will generate gray code patterns for projection.\n";

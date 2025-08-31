@@ -32,9 +32,11 @@ public:
         const std::string& leftIntrinsicFile,
         const std::string& rightIntrinsicFile,
         bool displayCorners = false, bool showRectified = true);
-
+    // 从文件中读取图像列表
     bool readStringList(const std::string& filename, std::vector<cv::String>& l);
+    // 获取双目参数
     const StereoParameters& getStereoParams() const { return stereoParams_; }
+    // 双目标定
     static void stereoCalibration();
 
 private:

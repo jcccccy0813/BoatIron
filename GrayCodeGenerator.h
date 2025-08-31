@@ -9,12 +9,13 @@
 
 class GrayCodeGenerator {
 public:
+    // 参数
     struct Params {
         int width = 512;
         int height = 384;
         std::string outputPath = ".";
     };
-
+    // 构造函数
     GrayCodeGenerator();
     explicit GrayCodeGenerator(const Params& params);
 

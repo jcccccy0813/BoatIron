@@ -14,11 +14,11 @@ CameraCapture::CameraCapture(): imageSavedCallback_(nullptr) {
     rightConfig.cameraName = "right";
     rightCamera_.setConfig(rightConfig);
 }
-
+// 析构函数
 CameraCapture::~CameraCapture() {
     stopCapture();
 }
-
+// 初始化单相机
 bool CameraCapture::initSingleCamera(int index) {
     if (index < 0 || index > 1) return false;
 
@@ -29,11 +29,11 @@ bool CameraCapture::initSingleCamera(int index) {
         return rightCamera_.initialize(0); // 对于单相机模式，右相机也使用第一个设备
     }
 }
-
+// 初始化双相机
 bool CameraCapture::initDualCameras() {
     return leftCamera_.initialize(0) && rightCamera_.initialize(1);
 }
-
+// 启动捕获
 void CameraCapture::startCapture() {
     globalRunning_ = true;
 
@@ -47,7 +47,7 @@ void CameraCapture::startCapture() {
         rightThread_ = std::thread(&CameraCapture::cameraThread, this, &rightCamera_, isSingleMode());
     }
 }
-
+// 停止捕获
 void CameraCapture::saveFrameWithCallback(CameraBase* camera, const cv::Mat& frame,
     const std::string& folder, int groupId) {
     CameraBase::createDirectoryIfNotExists(folder);
@@ -77,7 +77,7 @@ void CameraCapture::saveFrameWithCallback(CameraBase* camera, const cv::Mat& fra
         std::cerr << "[" << camera->getConfig().cameraName << "] Save failed!" << std::endl;
     }
 }
-
+// 相机线程
 void CameraCapture::cameraThread(CameraBase* camera, bool isSingleMode) {
     cv::namedWindow(camera->getConfig().windowName, cv::WINDOW_AUTOSIZE);
 
@@ -112,7 +112,7 @@ void CameraCapture::cameraThread(CameraBase* camera, bool isSingleMode) {
 
     cv::destroyWindow(camera->getConfig().windowName);
 }
-
+// 停止捕获逻辑
 void CameraCapture::stopCapture() {
     globalRunning_ = false;
 
@@ -126,22 +126,22 @@ void CameraCapture::stopCapture() {
     leftCamera_.stopGrabbing();
     rightCamera_.stopGrabbing();
 }
-
+// 保存图像
 void CameraCapture::saveImages(int groupId, bool isSingleMode) {
     std::lock_guard<std::mutex> lock(saveMutex_);
     globalSave_ = true;
     saveCount_ = isSingleMode ? 1 : 2;
     saveGroupID_ = groupId;
 }
-
+// 获取左图像列表
 const std::vector<std::string>& CameraCapture::getLeftImages() const {
     return leftImages_;
 }
-
+// 获取右图像列表
 const std::vector<std::string>& CameraCapture::getRightImages() const {
     return rightImages_;
 }
-
+// 单相机模式
 void CameraCapture::captureSingleCamera() {
     CameraCapture capture;
     int index;
@@ -188,6 +188,7 @@ void CameraCapture::captureSingleCamera() {
     }
     capture.stopCapture();
 }
+// 双相机模式
 void  CameraCapture::captureDualCameras() {
     CameraCapture capture;
     std::cout << "\n=== Dual Camera Capture ===\n";

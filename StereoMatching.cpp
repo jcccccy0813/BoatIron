@@ -1,6 +1,6 @@
 #include "StereoMatching.h"
 
-
+// StereoMatching
 StereoMatching::StereoMatching() {
     // 设置默认参数
     params_.algorithm = STEREO_SGBM;
@@ -12,7 +12,7 @@ StereoMatching::StereoMatching() {
     params_.disparityOutput = "disparity";
     params_.pointCloudOutput = "pointcloud";
 }
-
+//进程主函数
 bool StereoMatching::process(
     const std::string& imageList,
     const std::string& intrinsicFile,
@@ -162,7 +162,7 @@ bool StereoMatching::process(
 
     return true;
 }
-
+// 初始化BM算法
 void StereoMatching::initStereoBM(cv::Ptr<cv::StereoBM>& bm, int maxDisparity) {
     bm->setPreFilterCap(31);
     bm->setBlockSize(15);
@@ -174,7 +174,7 @@ void StereoMatching::initStereoBM(cv::Ptr<cv::StereoBM>& bm, int maxDisparity) {
     bm->setSpeckleRange(32);
     bm->setDisp12MaxDiff(1);
 }
-
+// 初始化SGBM算法
 void StereoMatching::initStereoSGBM(cv::Ptr<cv::StereoSGBM>& sgbm, int maxDisparity, int channels) {
     sgbm->setPreFilterCap(63);
     sgbm->setBlockSize(5);
@@ -194,7 +194,7 @@ void StereoMatching::initStereoSGBM(cv::Ptr<cv::StereoSGBM>& sgbm, int maxDispar
     default: sgbm->setMode(cv::StereoSGBM::MODE_SGBM);
     }
 }
-
+// 保存点云
 void StereoMatching::saveColoredXYZ(const std::string& filename,
     const cv::Mat& mat,
     const cv::Mat& color_img) {
@@ -226,7 +226,7 @@ void StereoMatching::saveColoredXYZ(const std::string& filename,
     }
     fclose(fp);
 }
-
+// 打印帮助信息
 void StereoMatching::printHelp() {
     std::cout << "\nStereo Matching Parameters:\n";
     std::cout << "imageList: Path to image list file (default: stereo_pairs.txt)\n";
@@ -239,7 +239,7 @@ void StereoMatching::printHelp() {
     std::cout << "colorDisplay: Use color images (default:true)\n";
 }
 
-
+// 运行
 void StereoMatching::stereoMatching() {
     std::cout << "\n=== Stereo Matching ===\n";
     std::cout << "Using default parameters:\n";

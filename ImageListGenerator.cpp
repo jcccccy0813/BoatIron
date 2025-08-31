@@ -1,6 +1,6 @@
 #include "ImageListGenerator.h"
 
-
+// 辅助函数
 int ImageListGenerator::extractNumberFromFilename(const std::string& filename) const {
     std::smatch match;
     std::regex pattern(R"((\d+))");
@@ -9,7 +9,7 @@ int ImageListGenerator::extractNumberFromFilename(const std::string& filename) c
     }
     return -1;
 }
-
+// 获取所有图像文件
 std::vector<fs::directory_entry> ImageListGenerator::getImageFiles(const std::string& folderPath) const {
     std::vector<fs::directory_entry> imageFiles;
 
@@ -26,7 +26,7 @@ std::vector<fs::directory_entry> ImageListGenerator::getImageFiles(const std::st
 
     return imageFiles;
 }
-
+// 生成图像列表
 void ImageListGenerator::sortImageFiles(std::vector<fs::directory_entry>& files) const {
     std::sort(files.begin(), files.end(), [this](const fs::directory_entry& a, const fs::directory_entry& b) {
         std::string nameA = a.path().filename().string();
@@ -41,7 +41,7 @@ void ImageListGenerator::sortImageFiles(std::vector<fs::directory_entry>& files)
         return extractNumberFromFilename(nameA) < extractNumberFromFilename(nameB);
         });
 }
-
+// 写入图像列表文件
 bool ImageListGenerator::writeToOutputFile(const std::vector<fs::directory_entry>& files,
     const std::string& folderPath,
     const std::string& outputFilePath) const {
@@ -58,7 +58,7 @@ bool ImageListGenerator::writeToOutputFile(const std::vector<fs::directory_entry
     outFile.close();
     return true;
 }
-
+// 主函数
 bool ImageListGenerator::generateImageList(const std::string& folderPath, const std::string& outputFilePath) {
     // 检查输入文件夹是否存在
     if (!fs::exists(folderPath) || !fs::is_directory(folderPath)) {
@@ -85,7 +85,7 @@ bool ImageListGenerator::generateImageList(const std::string& folderPath, const 
         << " (包含 " << imageFiles.size() << " 个图像)" << std::endl;
     return true;
 }
-
+//运行
 void ImageListGenerator::generateImageList() {
     std::cout << "\n=== Image List Generation ===\n";
     std::cout << "This will generate a sorted list of image files.\n";

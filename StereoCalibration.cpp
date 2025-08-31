@@ -2,7 +2,9 @@
 
 
 StereoCalibration::PresetConfig StereoCalibration::getPresetConfig(PresetType preset) {
+    // 获得初始配置
     PresetConfig config;
+    // 设置参数
     switch (preset) {
     case PRESET_CHARUCO_9X6_25MM:
         config.boardSize = cv::Size(9, 6);
@@ -22,7 +24,7 @@ StereoCalibration::PresetConfig StereoCalibration::getPresetConfig(PresetType pr
     }
     return config;
 }
-
+// 基于预设标定
 bool StereoCalibration::calibrateWithPreset(const std::string& imageListFile,
     const std::string& leftIntrinsicFile,
     const std::string& rightIntrinsicFile,
@@ -50,7 +52,7 @@ bool StereoCalibration::calibrateWithPreset(const std::string& imageListFile,
 
     return saveCalibrationResults("intrinsics.yml", "extrinsics.yml");
 }
-
+// 保存标定结果
 bool StereoCalibration::saveCalibrationResults(const std::string& intrinsicsFile,
     const std::string& extrinsicsFile) {
     // Save intrinsic parameters
@@ -289,7 +291,7 @@ bool StereoCalibration::calibrate(const std::vector<cv::String>& imagelist,
 
     return true;
 }
-
+//读取列表
 bool StereoCalibration::readStringList(const std::string& filename, std::vector<cv::String>& l) {
     l.clear();
     cv::FileStorage fs(filename, cv::FileStorage::READ);
@@ -309,6 +311,7 @@ bool StereoCalibration::readStringList(const std::string& filename, std::vector<
     }
     return !l.empty();
 }
+//运行
 void StereoCalibration::stereoCalibration() {
     StereoCalibration stereoCalib;
     std::cout << "\n=== Stereo Calibration ===\n";
