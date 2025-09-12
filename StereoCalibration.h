@@ -1,14 +1,15 @@
 #pragma once
-#include "Common.h"
+
 #include <string>
 #include <vector>
+#include <iostream>
+#include <ctime>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
-#include <iostream>
 #include <opencv2/objdetect/charuco_detector.hpp>
-#include <ctime>
+#include "Common.h"
 
 class StereoCalibration {
 public:

@@ -1,7 +1,7 @@
 #ifndef CAMERA_SYNC_CAPTURE_H
 #define CAMERA_SYNC_CAPTURE_H
 
-#include "CameraCapture.h"
+
 #include <windows.h>
 #include <gdiplus.h>
 #include <filesystem>
@@ -14,6 +14,7 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
+#include "CameraCapture.h"
 
 class CameraSyncCapture {
 public:

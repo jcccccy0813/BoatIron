@@ -1,7 +1,6 @@
 #ifndef CAMERA_CAPTURE_H
 #define CAMERA_CAPTURE_H
-#include"Common.h"
-#include "CameraBase.h"
+
 #include <thread>
 #include <vector>
 #include <string>
@@ -11,6 +10,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include"Common.h"
+#include "CameraBase.h"
 
 class CameraCapture {
 public:

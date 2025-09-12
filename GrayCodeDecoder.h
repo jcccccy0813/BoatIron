@@ -1,13 +1,14 @@
 #ifndef GRAY_CODE_DECODER_H
 #define GRAY_CODE_DECODER_H
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/structured_light.hpp>
+
 #include <string>
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <opencv2/opencv.hpp>
+#include <opencv2/structured_light.hpp>
 #include"Common.h"
 
 class GrayCodeDecoder {

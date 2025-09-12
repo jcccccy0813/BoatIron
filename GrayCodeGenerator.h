@@ -1,11 +1,12 @@
 #ifndef GRAY_CODE_GENERATOR_H
 #define GRAY_CODE_GENERATOR_H
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/structured_light.hpp>
+
 #include <string>
 #include <vector>
 #include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/structured_light.hpp>
 
 class GrayCodeGenerator {
 public:

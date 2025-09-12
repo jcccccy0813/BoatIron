@@ -5,14 +5,14 @@
 #include <atomic>
 #include <mutex>
 #include <vector>
-#include <opencv2/core.hpp>
-#include "MvCameraControl.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 #include <sys/stat.h>
+#include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include "MvCameraControl.h"
 
 #ifdef _WIN32
 #include <direct.h>
