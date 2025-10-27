@@ -1,43 +1,47 @@
-#include "CameraBase.h"
+ï»¿#include "CameraBase.h"
 
-//´°¿ÚÃûÏà»úÃû
+//çª—å£åç›¸æœºå
 CameraBase::CameraBase() {
     config_.windowName = "Camera";
     config_.cameraName = "camera";
 }
-//Îö¹¹º¯Êı
+//ææ„å‡½æ•°
 CameraBase::~CameraBase() {
     closeDevice();
 }
-//Ã¶¾ÙÉè±¸
+//æšä¸¾è®¾å¤‡
 bool CameraBase::enumDevices(MV_CC_DEVICE_INFO_LIST& deviceList) {
     return MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &deviceList) == MV_OK;
 }
-//³õÊ¼»¯
+void CameraBase::clearInputBuffer() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+//åˆå§‹åŒ–
 bool CameraBase::initialize(int index) {
-    //Ã¶¾ÙÉè±¸
+    //æšä¸¾è®¾å¤‡
     MV_CC_DEVICE_INFO_LIST deviceList = { 0 };
     if (!enumDevices(deviceList) || index >= (int)deviceList.nDeviceNum) {
         std::cerr << "Camera not found at index: " << index << std::endl;
         return false;
     }
-    //´´½¨¾ä±ú
+    //åˆ›å»ºå¥æŸ„
     if (MV_CC_CreateHandle(&handle_, deviceList.pDeviceInfo[index]) != MV_OK) {
         std::cerr << "Failed to create camera handle." << std::endl;
         return false;
     }
-    //´´½¨¾ä±ú
+    //åˆ›å»ºå¥æŸ„
     if (MV_CC_OpenDevice(handle_) != MV_OK) {
         std::cerr << "Failed to open camera." << std::endl;
         return false;
     }
 
-    // ÉèÖÃÏà»ú²ÎÊı
+    // è®¾ç½®ç›¸æœºå‚æ•°
     if (!setupCameraParameters()) {
         return false;
     }
 
-    // »ñÈ¡payload´óĞ¡
+    // è·å–payloadå¤§å°
     MVCC_INTVALUE stParam = { 0 };
     if (MV_CC_GetIntValue(handle_, "PayloadSize", &stParam) != MV_OK) {
         std::cerr << "Failed to get payload size." << std::endl;
@@ -47,7 +51,7 @@ bool CameraBase::initialize(int index) {
 
     return setResolution(config_.width, config_.height);
 }
-//ÉèÖÃ²ÎÊı
+//è®¾ç½®å‚æ•°
 bool CameraBase::setupCameraParameters() {
     if (MV_CC_SetEnumValue(handle_, "TriggerMode", config_.triggerMode ? 1 : 0) != MV_OK) {
         std::cerr << "Failed to set trigger mode." << std::endl;

@@ -69,9 +69,6 @@
     <ClCompile Include="StereoMatching.cpp">
       <Filter>Source Files\src\Match</Filter>
     </ClCompile>
-    <ClCompile Include="CameraCapture.cpp">
-      <Filter>Source Files\src\GetPicture</Filter>
-    </ClCompile>
     <ClCompile Include="CameraSyncCapture.cpp">
       <Filter>Source Files\src\GetPicture</Filter>
     </ClCompile>
@@ -83,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="ImageListGenerator.cpp">
       <Filter>Source Files\src\Support</Filter>
+    </ClCompile>
+    <ClCompile Include="getpicture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Source Files\src\GetPicture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +101,6 @@
     <ClInclude Include="StereoMatching.h">
       <Filter>Header Files\Match</Filter>
     </ClInclude>
-    <ClInclude Include="CameraCapture.h">
-      <Filter>Header Files\GetPicture</Filter>
-    </ClInclude>
     <ClInclude Include="CameraBase.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
@@ -115,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="ImageListGenerator.h">
       <Filter>Header Files\Support</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Header Files\GetPicture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

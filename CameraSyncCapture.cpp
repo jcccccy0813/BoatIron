@@ -1,29 +1,17 @@
+#include "CameraBase.h"
 #include "CameraSyncCapture.h"
-
 
 #pragma comment(lib, "gdiplus.lib")
 namespace fs = std::filesystem;
 using namespace Gdiplus;
 
 CameraSyncCapture::CameraSyncCapture() {
-    // 设置图像保存回调
-    cameraCapture_.setImageSavedCallback(
-        [this](const std::string& cameraName, const std::string& filename) {
-            this->handleImageSaved(cameraName, filename);
-        }
-    );
+    // 注意：CameraManager 没有回调机制，需要调整同步逻辑
 
-    // 配置相机参数
-    CameraBase::CameraConfig leftConfig;
-    leftConfig.windowName = "Left Camera";
-    leftConfig.cameraName = "left";
-    leftConfig.exposureTime = 10000.0f;
-
-    CameraBase::CameraConfig rightConfig;
-    rightConfig.windowName = "Right Camera";
-    rightConfig.cameraName = "right";
-    rightConfig.exposureTime = 10000.0f;
+    // 配置相机参数（如果需要，可以在 CameraManager 中设置）
+    // CameraManager 会在内部初始化时配置相机
 }
+
 // 析构函数
 CameraSyncCapture::~CameraSyncCapture() {
     stopCapture();
@@ -31,13 +19,12 @@ CameraSyncCapture::~CameraSyncCapture() {
     if (hwnd_) DestroyWindow(hwnd_);
     if (gdiplusToken_) GdiplusShutdown(gdiplusToken_);
 }
+
 // 初始化
 bool CameraSyncCapture::initialize() {
-    // 初始化双相机
-    if (!cameraCapture_.initDualCameras()) {
-        std::cerr << "Failed to initialize dual cameras!" << std::endl;
-        return false;
-    }
+    // 初始化双相机 - 使用 CameraManager 的初始化方式
+    // CameraManager 会在 runDualCameraMode 中处理初始化
+    // 这里我们主要初始化投影仪
 
     // 初始化投影仪
     if (!initializeProjector()) {
@@ -45,8 +32,10 @@ bool CameraSyncCapture::initialize() {
         return false;
     }
 
+    isRunning_ = true;
     return true;
 }
+
 // 投影仪初始化
 bool CameraSyncCapture::initializeProjector() {
     GdiplusStartupInput gdiplusStartupInput;
@@ -101,6 +90,7 @@ bool CameraSyncCapture::initializeProjector() {
 
     return true;
 }
+
 // 加载图像文件
 std::vector<std::wstring> CameraSyncCapture::loadImageFiles(const std::wstring& folder) {
     std::vector<std::wstring> files;
@@ -128,6 +118,7 @@ std::vector<std::wstring> CameraSyncCapture::loadImageFiles(const std::wstring& 
 
     return files;
 }
+
 // 投影图像
 void CameraSyncCapture::projectImage(const std::wstring& imagePath) {
     if (!hdc_ || !hwnd_) return;
@@ -155,22 +146,45 @@ void CameraSyncCapture::projectImage(const std::wstring& imagePath) {
         graphics.DrawImage(img.get(), x, y, imgWidth, imgHeight);
     }
 }
-// 处理图像保存
-void CameraSyncCapture::handleImageSaved(const std::string& cameraName, const std::string& filename) {
-    imagesSaved_++;
-    std::cout << "[" << cameraName << "] Image saved: " << filename << std::endl;
 
-    if (imagesSaved_ >= 2) {
-        syncCV_.notify_one();
+void CameraSyncCapture::triggerImageSave() {
+    // 重置计数器
+    imagesSaved_ = 0;
+
+    std::cout << "Triggering programmatic image capture..." << std::endl;
+
+    // 使用新的程序化保存方法
+    cameraManager_.triggerCapture();
+
+    // 等待保存完成 - 监控保存状态
+    for (int i = 0; i < 50; ++i) { // 最多等待5秒
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        // 检查是否还在保存中
+        if (!cameraManager_.isSaving() && cameraManager_.getSaveCount() == 0) {
+            std::cout << "Image capture completed." << std::endl;
+            imagesSaved_ = 2;
+            return;
+        }
+
+        // 每1秒输出一次状态
+        if (i % 10 == 0) {
+            std::cout << "Waiting for image save... " << (i / 10) << "s" << std::endl;
+        }
     }
+
+    std::cout << "Image capture timeout, continuing..." << std::endl;
+    imagesSaved_ = 2; // 强制继续
 }
+
 // 同步等待
 void CameraSyncCapture::waitForCamerasToSave() {
     std::unique_lock<std::mutex> lock(syncMutex_);
     syncCV_.wait(lock, [this] {
-        return imagesSaved_ >= 2 || !cameraCapture_.isRunning();
+        return imagesSaved_ >= 2 || !isRunning_;
         });
 }
+
 // 运行同步采集
 void CameraSyncCapture::runSyncCapture() {
     // 加载灰度码图像
@@ -182,17 +196,46 @@ void CameraSyncCapture::runSyncCapture() {
 
     std::cout << "Found " << images.size() << " pattern images" << std::endl;
 
-    // 创建数据目录
+    // 创建数据目录 -  会在内部创建 data 目录
+    // 我们需要确保目录存在
     CameraBase::createDirectoryIfNotExists("data");
-    CameraBase::createDirectoryIfNotExists("data/left");
-    CameraBase::createDirectoryIfNotExists("data/right");
+    CameraBase::createDirectoryIfNotExists("data/Cam_001");
+    CameraBase::createDirectoryIfNotExists("data/Cam_002");
+    // === 关键修改：先检查相机状态 ===
+    std::cout << "Checking camera availability..." << std::endl;
+    MV_CC_DEVICE_INFO_LIST deviceList = { 0 };
+    if (!CameraBase::enumDevices(deviceList) || deviceList.nDeviceNum < 2) {
+        std::cerr << "Need at least 2 cameras! Found: " << deviceList.nDeviceNum << std::endl;
+        return;
+    }
+    std::cout << "Found " << deviceList.nDeviceNum << " cameras" << std::endl;
 
-    // 启动相机采集
-    cameraCapture_.startCapture();
+    // 在单独的线程中启动相机采集
+    std::atomic<bool> cameraThreadRunning{ false };
+    std::thread cameraThread([this, &cameraThreadRunning]() {
+        cameraThreadRunning = true;
+        std::cout << "Starting camera manager in dual camera mode..." << std::endl;
+        cameraManager_.runDualCameraMode();
+        std::cout << "Camera manager thread finished." << std::endl;
+        cameraThreadRunning = false;
+        });
+
+    // 等待相机初始化完成
+    std::cout << "Waiting for camera initialization..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    if (!cameraThreadRunning) {
+        std::cerr << "Camera thread failed to start!" << std::endl;
+        stopCapture();
+        if (cameraThread.joinable()) cameraThread.join();
+        return;
+    }
+
+    std::cout << "Camera initialization completed, starting projection..." << std::endl;
 
     // 主循环
     for (int i = 0; i < images.size(); ++i) {
-        if (!cameraCapture_.isRunning()) {
+        if (!isRunning_) {
             break;
         }
 
@@ -204,18 +247,13 @@ void CameraSyncCapture::runSyncCapture() {
         // 等待投影稳定
         std::this_thread::sleep_for(std::chrono::seconds(3));
 
-        // 重置计数器并开始采集
-        {
-            std::lock_guard<std::mutex> lock(syncMutex_);
-            imagesSaved_ = 0;
-            currentGroup_ = i;
-        }
-
-        // 触发相机保存
-        cameraCapture_.saveImages(i, false);
+        // 触发图像保存
+        triggerImageSave();
 
         // 等待两台相机都完成保存
         waitForCamerasToSave();
+
+        std::cout << "Pattern " << (i + 1) << " captured and saved." << std::endl;
 
         // 处理Windows消息
         MSG msg;
@@ -233,12 +271,18 @@ void CameraSyncCapture::runSyncCapture() {
     }
 
     std::cout << "Capture completed successfully!" << std::endl;
-    std::cout << "Left images: " << cameraCapture_.getLeftImages().size() << std::endl;
-    std::cout << "Right images: " << cameraCapture_.getRightImages().size() << std::endl;
+
+    // 停止相机采集
+    stopCapture();
+
+    if (cameraThread.joinable()) {
+        cameraThread.join();
+    }
 }
+
 // 停止采集
 void CameraSyncCapture::stopCapture() {
-    cameraCapture_.stopCapture();
+    isRunning_ = false;
 
     // 通知所有等待的线程
     {
@@ -247,6 +291,7 @@ void CameraSyncCapture::stopCapture() {
     }
     syncCV_.notify_all();
 }
+
 // 运行
 void CameraSyncCapture::structuredLightCapture() {
     std::cout << "\n=== Structured Light Auto Capture ===\n";
@@ -257,12 +302,12 @@ void CameraSyncCapture::structuredLightCapture() {
     std::cout << "4. System will automatically:\n";
     std::cout << "   - Project each pattern\n";
     std::cout << "   - Capture synchronized images\n";
-    std::cout << "   - Save to data/left/ and data/right/\n\n";
+    std::cout << "   - Save to data/Cam_001/ and data/Cam_002/\n\n";
 
     std::cout << "Continue? (y/n): ";
     char confirm;
     std::cin >> confirm;
-    clearInputBuffer();
+    CameraBase::clearInputBuffer();
 
     if (confirm != 'y' && confirm != 'Y') {
         std::cout << "Operation cancelled.\n";
@@ -286,7 +331,7 @@ void CameraSyncCapture::structuredLightCapture() {
     try {
         syncCapture.runSyncCapture();
         std::cout << "\nStructured light capture completed successfully!\n";
-        std::cout << "Images saved to data/left/ and data/right/ folders\n";
+        std::cout << "Images saved to data/Cam_001/ and data/Cam_002/ folders\n";
     }
     catch (const std::exception& e) {
         std::cerr << "Error during capture: " << e.what() << "\n";

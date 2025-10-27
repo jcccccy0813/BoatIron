@@ -123,8 +123,9 @@
   <ItemGroup>
     <ClCompile Include="Calibration.cpp" />
     <ClCompile Include="CameraBase.cpp" />
-    <ClCompile Include="CameraCapture.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CameraSyncCapture.cpp" />
+    <ClCompile Include="getpicture.cpp" />
     <ClCompile Include="GrayCodeDecoder.cpp" />
     <ClCompile Include="GrayCodeGenerator.cpp" />
     <ClCompile Include="ImageListGenerator.cpp" />
@@ -136,7 +137,7 @@
   <ItemGroup>
     <ClInclude Include="Calibration.h" />
     <ClInclude Include="CameraBase.h" />
-    <ClInclude Include="CameraCapture.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CameraSyncCapture.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="GrayCodeDecoder.h" />

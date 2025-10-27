@@ -42,7 +42,8 @@ public:
     bool initialize(int index = 0);
     // 枚举相机
     static bool enumDevices(MV_CC_DEVICE_INFO_LIST& deviceList);
-
+    // 清空输入缓冲区
+    static void clearInputBuffer();
     // 相机控制
     // 分辨率设置
     bool setResolution(int width, int height);
