@@ -125,7 +125,6 @@
     <ClCompile Include="CameraBase.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CameraSyncCapture.cpp" />
-    <ClCompile Include="getpicture.cpp" />
     <ClCompile Include="GrayCodeDecoder.cpp" />
     <ClCompile Include="GrayCodeGenerator.cpp" />
     <ClCompile Include="ImageListGenerator.cpp" />

@@ -125,6 +125,7 @@ void CameraManager::runSingleCameraMode() {
     globalRunning_ = true;
     globalSave_ = false;
     saveCount_ = 0;
+    resetSaveGroupID();
     MV_CC_DEVICE_INFO_LIST deviceList = { 0 };
     if (!CameraBase::enumDevices(deviceList) || deviceList.nDeviceNum == 0) {
         printf("No cameras found.\n");
@@ -175,7 +176,8 @@ void CameraManager::runSingleCameraMode() {
 void CameraManager::runDualCameraMode() {
     globalRunning_ = true;
     globalSave_ = false;
-    saveCount_ = 0;
+    saveCount_ = 0; 
+    resetSaveGroupID();
     MV_CC_DEVICE_INFO_LIST deviceList = { 0 };
     if (!CameraBase::enumDevices(deviceList) || deviceList.nDeviceNum < 2) {
         printf("Need at least 2 cameras!\n");

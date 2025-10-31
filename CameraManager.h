@@ -37,7 +37,8 @@ private:
     // ¹¤¾ßº¯Êý
     int detectLeftRightCameras(const MV_CC_DEVICE_INFO_LIST& deviceList, int& leftIndex, int& rightIndex);
     void handleKeyboardInput(int cameraCount);
-
+    //ÖÃ1
+    void resetSaveGroupID() { saveGroupID_ = 0; }
     std::atomic<bool> globalRunning_{ true };
     std::atomic<bool> globalSave_{ false };
     std::atomic<int> saveCount_{ 0 };

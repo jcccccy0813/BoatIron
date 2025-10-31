@@ -81,9 +81,6 @@
     <ClCompile Include="ImageListGenerator.cpp">
       <Filter>Source Files\src\Support</Filter>
     </ClCompile>
-    <ClCompile Include="getpicture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Source Files\src\GetPicture</Filter>
     </ClCompile>
